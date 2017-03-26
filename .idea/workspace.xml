@@ -11,7 +11,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac9d8ecd-4899-4a3d-aa78-629ced3e8baa" name="Default" comment="初次修改项目结构">
+    <list default="true" id="ac9d8ecd-4899-4a3d-aa78-629ced3e8baa" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GitHub.iws" />
@@ -3773,7 +3773,14 @@
       <option name="project" value="LOCAL" />
       <updated>1490531883508</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="workspace commit">
+      <created>1490532831490</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1490532831490</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -3880,7 +3887,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First time for my custom dialog" />
     <MESSAGE value="初次修改项目结构" />
-    <option name="LAST_COMMIT_MESSAGE" value="初次修改项目结构" />
+    <MESSAGE value="workspace commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
