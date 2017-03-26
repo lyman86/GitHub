@@ -6,6 +6,7 @@ import android.view.View;
 import com.ly.luoyan.mylibrary.listener.OnCusDialogListener;
 import com.ly.luoyan.mylibrary.utils.L;
 import com.ly.luoyan.mylibrary.widget.CustomDialog;
+import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 import com.zjtcb.luoyan.github.R;
 import com.zjtcb.luoyan.github.base.BaseActivityForApp;
 
@@ -16,11 +17,13 @@ import butterknife.OnClick;
  */
 
 public class DialogActivity extends BaseActivityForApp implements OnCusDialogListener{
+    private static final String TAG = "DialogActivity";
 
     public void initApp() {
 
         L.e("base","initApp");
         setContentView(R.layout.activity_dialog);
+        L.e("base","setContentView");
         setOnCusDialogListener(this);
 
     }
@@ -53,5 +56,15 @@ public class DialogActivity extends BaseActivityForApp implements OnCusDialogLis
                 showToast("sure");
                 break;
         }
+    }
+
+    @Override
+    public void initData() {
+        titleBar.setCenterText("DialogActivity");
+    }
+
+    @Override
+    public void initListener() {
+        titleBar.setOnBarViewClickListener(this);
     }
 }

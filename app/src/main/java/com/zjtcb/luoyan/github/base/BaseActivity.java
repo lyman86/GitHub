@@ -22,7 +22,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         initBase();
+        initData();
+        initListener();
         L.e("base","BaseActivity   onCreate");
+        processLogic();
     }
 
     public void showToast(final String string) {
@@ -37,5 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract void initBase();
 
-    public void processLogic(){};
+    public void initData(){}
+
+    public void initListener(){}
+
+    public void processLogic(){}
 }

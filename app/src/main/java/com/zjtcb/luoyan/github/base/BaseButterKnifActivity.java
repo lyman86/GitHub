@@ -1,7 +1,10 @@
 package com.zjtcb.luoyan.github.base;
 
 import com.ly.luoyan.mylibrary.utils.L;
+import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
+import com.zjtcb.luoyan.github.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**

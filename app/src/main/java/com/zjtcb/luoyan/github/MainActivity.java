@@ -27,5 +27,8 @@ public class MainActivity extends BaseActivityForApp {
         }
     }
 
-
+    @Override
+    public void initData() {
+        titleBar.setCenterText("MainActivity");
+    }
 }

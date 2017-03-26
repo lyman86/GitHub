@@ -9,4 +9,8 @@
     <color name="green">#f0f0</color>
 
     <color name="write">#ffffff</color>
+
+    <color name="title_bar_text">#ffffff</color>
+
+    <color name="title_bar">#de3a3a</color>
 </resources>

@@ -4,12 +4,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.ly.luoyan.mylibrary.widget.CustomSelectItem
-        android:layout_width="match_parent"
-        lyman:centerTypeSelect="text"
-        android:background="@color/colorAccent"
-        lyman:centerTextSelect = "Dialog"
-        android:layout_height="40dp"/>
+    <include layout="@layout/include_title_bar_ct_li"/>
 
 
     <Button
