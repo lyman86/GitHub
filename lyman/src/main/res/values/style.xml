@@ -1,0 +1,22 @@
+<resources>
+
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <!-- 竖直弹出-->
+    <style name="mypopwindow_anim_style_ver">
+        <item name="android:windowEnterAnimation">@anim/pop_show_ver</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_ver</item>
+    </style>
+    <!-- 水平弹出-->
+    <style name="mypopwindow_anim_style_hor">
+        <item name="android:windowEnterAnimation">@anim/pop_show_hor</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_hor</item>
+    </style>
+
+
+</resources>
