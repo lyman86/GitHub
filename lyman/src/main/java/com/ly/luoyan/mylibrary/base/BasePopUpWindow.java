@@ -78,11 +78,11 @@ public abstract class BasePopUpWindow extends PopupWindow {
 		});
 		initId();
 		initEvent();
-		if (mode==HOR){
-			setAnimationStyle(R.style.mypopwindow_anim_style_hor);
-		}else if (mode==VER){
-			setAnimationStyle(R.style.mypopwindow_anim_style_ver);
-		}
+//		if (mode==HOR){
+//			setAnimationStyle(R.style.mypopwindow_anim_style_hor);
+//		}else if (mode==VER){
+//			setAnimationStyle(R.style.mypopwindow_anim_style_ver);
+//		}
 
 	}
 	

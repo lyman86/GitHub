@@ -7,9 +7,14 @@ import com.ly.luoyan.mylibrary.listener.OnCusDialogListener;
 import com.ly.luoyan.mylibrary.utils.L;
 import com.ly.luoyan.mylibrary.widget.CustomDialog;
 import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
+import com.zjtcb.luoyan.github.MainActivity;
 import com.zjtcb.luoyan.github.R;
 import com.zjtcb.luoyan.github.base.BaseActivityForApp;
+import com.zjtcb.luoyan.github.event.EventMessage;
 
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -18,6 +23,9 @@ import butterknife.OnClick;
 
 public class DialogActivity extends BaseActivityForApp implements OnCusDialogListener{
     private static final String TAG = "DialogActivity";
+
+    @Bind(R.id.cus_title_bar)
+    CustomSelectItem titleBar;
 
     public void initApp() {
 
@@ -66,5 +74,11 @@ public class DialogActivity extends BaseActivityForApp implements OnCusDialogLis
     @Override
     public void initListener() {
         titleBar.setOnBarViewClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        EventBus.getDefault().post(new EventMessage(MainActivity.REFRESH_ME,-1));
     }
 }

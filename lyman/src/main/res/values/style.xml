@@ -8,14 +8,28 @@
     </style>
 
     <!-- 竖直弹出-->
-    <style name="mypopwindow_anim_style_ver">
-        <item name="android:windowEnterAnimation">@anim/pop_show_ver</item>
-        <item name="android:windowExitAnimation">@anim/pop_hide_ver</item>
+    <style name="mypopwindow_anim_style_ver_from_bottom">
+        <item name="android:windowEnterAnimation">@anim/pop_show_ver_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_ver_from_bottom</item>
+    </style>
+    <style name="mypopwindow_anim_style_ver_from_top">
+        <item name="android:windowEnterAnimation">@anim/pop_show_ver_from_top</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_ver_from_top</item>
     </style>
     <!-- 水平弹出-->
-    <style name="mypopwindow_anim_style_hor">
-        <item name="android:windowEnterAnimation">@anim/pop_show_hor</item>
-        <item name="android:windowExitAnimation">@anim/pop_hide_hor</item>
+    <style name="mypopwindow_anim_style_hor_from_left">
+        <item name="android:windowEnterAnimation">@anim/pop_show_hor_from_left</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_hor_from_left</item>
+    </style>
+
+    <style name="mypopwindow_anim_style_hor_from_right">
+        <item name="android:windowEnterAnimation">@anim/pop_show_hor_from_right</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_hor_to_right</item>
+    </style>
+
+    <style name="mypopwindow_anim_style_cus">
+        <item name="android:windowEnterAnimation">@anim/pop_show_custom</item>
+        <item name="android:windowExitAnimation">@anim/pop_hide_custom</item>
     </style>
 
 

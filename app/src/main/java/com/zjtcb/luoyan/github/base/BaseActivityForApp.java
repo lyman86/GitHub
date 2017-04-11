@@ -15,9 +15,6 @@ import butterknife.Bind;
  */
 
 public abstract class BaseActivityForApp extends BaseButterKnifActivity implements CustomSelectItem.OnBarViewClickListener{
-    @Nullable
-    @Bind(R.id.cus_title_bar)
-    public CustomSelectItem titleBar;
 
     @Override
     public void initBK(){
