@@ -38,7 +38,7 @@ public abstract class BasePopUpWindow extends PopupWindow implements PopupWindow
 
 	private int mode = TANS_HOR_FROM_RIGHT;
 	private MyWindow window;
-	private float proPortion = 0.3f;
+	private float proPortion = 0.4f;
 	/**
 	 * 是否已关灯
 	 */
