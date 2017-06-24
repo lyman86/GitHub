@@ -1,10 +1,12 @@
 package com.zjtcb.luoyan.github.activity;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.ly.luoyan.mylibrary.base.BaseActivityForApp;
 import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 import com.zjtcb.luoyan.github.R;
-import com.zjtcb.luoyan.github.base.BaseActivityForApp;
 import com.zjtcb.luoyan.github.popupwindow.OpenFromBottomPopupwindow;
 import com.zjtcb.luoyan.github.popupwindow.OpenFromLeftPopupwindow;
 import com.zjtcb.luoyan.github.popupwindow.OpenFromRightPopupwindow;
@@ -18,7 +20,7 @@ import butterknife.OnClick;
  * Created by luoyan on 2017/4/10.
  */
 
-public class PopupWindowActivity extends BaseActivityForApp{
+public class PopupWindowActivity extends BaseActivityForApp {
 
     @Bind(R.id.view)
     View view;
@@ -28,11 +30,25 @@ public class PopupWindowActivity extends BaseActivityForApp{
 
     @Bind(R.id.cus_title_bar)
     CustomSelectItem titleBar;
-
+    /**
+     * 从右边弹出
+     */
     OpenFromRightPopupwindow openFromRightPopupwindow;
+    /**
+     * 从左边弹出
+     */
     OpenFromLeftPopupwindow openFromLeftPopupwindow;
+    /**
+     * 从底下弹出
+     */
     OpenFromBottomPopupwindow openFromBottomPopupwindow;
+    /**
+     * 从上边弹出
+     */
     OpenFromTopPopupwindow openFromTopPopupwindow;
+    /**
+     * 从中间弹出
+     */
     OpenPopupwindowCustom openPopupwindowCustom;
 
     @Override
@@ -43,6 +59,7 @@ public class PopupWindowActivity extends BaseActivityForApp{
     @Override
     public void initData() {
         titleBar.setCenterText("PopupWindow");
+        titleBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleBarHeight+statusBarHeight));
         openFromRightPopupwindow = new OpenFromRightPopupwindow(this);
         openFromLeftPopupwindow = new OpenFromLeftPopupwindow(this);
         openFromBottomPopupwindow = new OpenFromBottomPopupwindow(this);
@@ -77,4 +94,8 @@ public class PopupWindowActivity extends BaseActivityForApp{
         }
     }
 
+    @Override
+    public void initListener() {
+        titleBar.setOnBarViewClickListener(this);
+    }
 }

@@ -26,4 +26,8 @@ public interface CusDialogShow {
      */
     void showDialogProgressCus();
 
+    void dismissDialog();
+
+    void remove();
+
 }

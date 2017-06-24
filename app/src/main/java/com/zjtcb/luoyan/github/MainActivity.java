@@ -1,20 +1,19 @@
 package com.zjtcb.luoyan.github;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.ly.luoyan.mylibrary.base.BaseActivityForApp;
 import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 import com.zjtcb.luoyan.github.activity.DialogActivity;
 import com.zjtcb.luoyan.github.activity.PopupWindowActivity;
-import com.zjtcb.luoyan.github.base.BaseActivityForApp;
-import com.zjtcb.luoyan.github.event.EventMessage;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import com.zjtcb.luoyan.github.activity.TestActivity;
+import com.zjtcb.luoyan.github.activity.WithFragmentActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-
 
 public class MainActivity extends BaseActivityForApp {
 
@@ -28,7 +27,7 @@ public class MainActivity extends BaseActivityForApp {
         setContentView(R.layout.activity_main);
     }
 
-    @OnClick({R.id.btn_go_dialog_activity,R.id.btn_go_popup_window_activity})
+    @OnClick({R.id.btn_go_dialog_activity,R.id.btn_go_popup_window_activity,R.id.btn_go_fragment_activity})
     public void go(View view){
         switch (view.getId()){
             case R.id.btn_go_dialog_activity:
@@ -37,11 +36,15 @@ public class MainActivity extends BaseActivityForApp {
             case R.id.btn_go_popup_window_activity:
                 startActivity(new Intent(this, PopupWindowActivity.class));
                 break;
+            case R.id.btn_go_fragment_activity:
+                startActivity(new Intent(this, WithFragmentActivity.class));
+                break;
         }
     }
     @Override
     public void initData() {
         titleBar.setCenterText("MainActivity");
+        titleBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleBarHeight+statusBarHeight));
     }
 
 //    @Subscribe

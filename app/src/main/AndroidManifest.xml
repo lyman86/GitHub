@@ -19,6 +19,8 @@
 
         <activity android:name=".activity.DialogActivity"/>
         <activity android:name=".activity.PopupWindowActivity"/>
+        <activity android:name=".activity.TestActivity"/>
+        <activity android:name=".activity.WithFragmentActivity"/>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -132,6 +133,11 @@ public class CustomSelectItem extends View implements View.OnClickListener{
     private float clickX;
 
     private OnBarViewClickListener mListener;
+    /**
+     * titleBar内容整体居中Gravity.CENTER，靠下Gravity.BOTTOM，靠上Gravity.TOP
+     */
+    private int gravity = Gravity.CENTER;
+    private float allPaddingBottom = 0;
 
     @Override
     public void onClick(View v) {
@@ -169,7 +175,7 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         super(context, attrs, defStyleAttr);
         this.context = context;
         setOnClickListener(this);
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.itemView, defStyleAttr, 0);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomSelectItem, defStyleAttr, 0);
         //初始化类型
         initType(ta);
         ta.recycle();
@@ -179,11 +185,13 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * 初始化类型
      */
     private void initType(TypedArray ta) {
-        leftType = ta.getInt(R.styleable.itemView_leftTypeSelect, -1);
-        leftSideType = ta.getInt(R.styleable.itemView_leftSideTypeSelect, -1);
-        rightType = ta.getInt(R.styleable.itemView_rightTypeSelect, -1);
-        rightSideType = ta.getInt(R.styleable.itemView_rightSideTypeSelect, -1);
-        centerType = ta.getInt(R.styleable.itemView_centerTypeSelect, -1);
+        leftType = ta.getInt(R.styleable.CustomSelectItem_leftTypeSelect, -1);
+        leftSideType = ta.getInt(R.styleable.CustomSelectItem_leftSideTypeSelect, -1);
+        rightType = ta.getInt(R.styleable.CustomSelectItem_rightTypeSelect, -1);
+        rightSideType = ta.getInt(R.styleable.CustomSelectItem_rightSideTypeSelect, -1);
+        centerType = ta.getInt(R.styleable.CustomSelectItem_centerTypeSelect, -1);
+        gravity = ta.getInt(R.styleable.CustomSelectItem_gravitySelect,Gravity.CENTER);
+        allPaddingBottom = ta.getDimension(R.styleable.CustomSelectItem_allPaddingBootomSelect,0);
         initAttribute(ta);
     }
 
@@ -341,15 +349,17 @@ public class CustomSelectItem extends View implements View.OnClickListener{
             float scale = Math.min(scaleWidth, scaleHeight);
             matrix.postScale(scale / 2, scale / 2);
         }else{
-            if (rightImageTimes==1.0f){
-                matrix.postScale(0.6f, 1.0f);
-            }else{
                 matrix.postScale(rightImageTimes, rightImageTimes);
-            }
-
         }
         Bitmap res = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
-        canvas.drawBitmap(res, viewWidth - res.getWidth() - rightImagePaddingRight, viewHeight / 2 - res.getHeight() / 2+rightImagePaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawBitmap(res, viewWidth - res.getWidth() - rightImagePaddingRight, viewHeight / 2 - res.getHeight() / 2+rightImagePaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            canvas.drawBitmap(res, viewWidth - res.getWidth() - rightImagePaddingRight, viewHeight - res.getHeight()+rightImagePaddingTop -allPaddingBottom, paint);
+        }else{
+            canvas.drawBitmap(res, viewWidth - res.getWidth() - rightImagePaddingRight, viewHeight / 2 - res.getHeight() / 2+rightImagePaddingTop, paint);
+        }
+
         rightImageWidth = res.getWidth();
     }
 
@@ -362,7 +372,14 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textCenterVerticalBaselineY = viewHeight / 2 - fm.descent + (fm.descent - fm.ascent) / 2;
         rightTextWidth = bounds.width();
-        canvas.drawText(rightText, viewWidth - bounds.width() - rightTextPaddingRight, textCenterVerticalBaselineY + rightTextPaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawText(rightText, viewWidth - bounds.width() - rightTextPaddingRight, textCenterVerticalBaselineY + rightTextPaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            textCenterVerticalBaselineY = viewHeight - fm.bottom;
+            canvas.drawText(rightText, viewWidth - bounds.width() - rightTextPaddingRight, textCenterVerticalBaselineY-allPaddingBottom, paint);
+        }else{
+            canvas.drawText(rightText, viewWidth - bounds.width() - rightTextPaddingRight, textCenterVerticalBaselineY + rightTextPaddingTop, paint);
+        }
     }
 
     /**
@@ -374,7 +391,14 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textCenterVerticalBaselineY = viewHeight / 2 - fm.descent + (fm.descent - fm.ascent) / 2;
         rightSideTextWidth = bounds.width();
-        canvas.drawText(rightSideText, viewWidth - bounds.width() - rightSideTextPaddingRight - rightImageWidth - rightImagePaddingRight, textCenterVerticalBaselineY+rightSideTextPaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawText(rightSideText, viewWidth - bounds.width() - rightSideTextPaddingRight - rightImageWidth - rightImagePaddingRight, textCenterVerticalBaselineY+rightSideTextPaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            textCenterVerticalBaselineY = viewHeight - fm.bottom;
+            canvas.drawText(rightSideText, viewWidth - bounds.width() - rightSideTextPaddingRight - rightImageWidth - rightImagePaddingRight, textCenterVerticalBaselineY-allPaddingBottom, paint);
+        }else{
+            canvas.drawText(rightSideText, viewWidth - bounds.width() - rightSideTextPaddingRight - rightImageWidth - rightImagePaddingRight, textCenterVerticalBaselineY+rightSideTextPaddingTop, paint);
+        }
     }
 
     /**
@@ -386,7 +410,14 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textCenterVerticalBaselineY = viewHeight / 2 - fm.descent + (fm.descent - fm.ascent) / 2;
         centerTextWidth = bounds.width();
-        canvas.drawText(centerText, (viewWidth - bounds.width())/2, textCenterVerticalBaselineY + centerTextPaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawText(centerText, (viewWidth - bounds.width())/2, textCenterVerticalBaselineY + centerTextPaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            textCenterVerticalBaselineY = viewHeight - fm.bottom;
+            canvas.drawText(centerText, (viewWidth - bounds.width())/2, textCenterVerticalBaselineY-allPaddingBottom, paint);
+        }else{
+            canvas.drawText(centerText, (viewWidth - bounds.width())/2, textCenterVerticalBaselineY + centerTextPaddingTop, paint);
+        }
     }
     /**
      * 画中间的图片
@@ -403,7 +434,13 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         Matrix matrix = new Matrix();
         matrix.postScale(scale/2, scale/2);
         Bitmap res = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
-        canvas.drawBitmap(res, (viewWidth-res.getWidth())/2, viewHeight / 2 - res.getHeight() / 2+centerImagePaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawBitmap(res, (viewWidth-res.getWidth())/2, viewHeight / 2 - res.getHeight() / 2+centerImagePaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            canvas.drawBitmap(res, (viewWidth-res.getWidth())/2, viewHeight - res.getHeight()+centerImagePaddingTop - allPaddingBottom, paint);
+        }else{
+            canvas.drawBitmap(res, (viewWidth-res.getWidth())/2, viewHeight / 2 - res.getHeight() / 2+centerImagePaddingTop, paint);
+        }
         centerImageWidth = res.getWidth();
     }
     /**
@@ -415,7 +452,14 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textCenterVerticalBaselineY = viewHeight / 2 - fm.descent + (fm.descent - fm.ascent) / 2;
         leftTextWidth = bounds.width();
-        canvas.drawText(leftText, leftTextPaddingLeft, textCenterVerticalBaselineY+leftTextPaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawText(leftText, leftTextPaddingLeft, textCenterVerticalBaselineY+leftTextPaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            textCenterVerticalBaselineY = viewHeight - fm.bottom;
+            canvas.drawText(leftText, leftTextPaddingLeft, textCenterVerticalBaselineY-allPaddingBottom, paint);
+        }else{
+            canvas.drawText(leftText, leftTextPaddingLeft, textCenterVerticalBaselineY+leftTextPaddingTop, paint);
+        }
     }
 
     /**
@@ -431,14 +475,16 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         float scaleHeight = viewHeight *1.0f/ imageHeight;
         float scale = Math.min(scaleWidth, scaleHeight);
         Matrix matrix = new Matrix();
-        if (leftImageTimes==1.0f){
-            matrix.postScale(1.5f, 1.5f);
-        }else{
             matrix.postScale(leftImageTimes, leftImageTimes);
+        Bitmap res = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+        if (gravity==Gravity.CENTER){
+            canvas.drawBitmap(res, leftImagePaddingLeft, viewHeight / 2 - res.getHeight() / 2+leftImagePaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            canvas.drawBitmap(res, leftImagePaddingLeft, viewHeight - res.getHeight() - allPaddingBottom, paint);
+        }else{
+            canvas.drawBitmap(res, leftImagePaddingLeft, viewHeight / 2 - res.getHeight() / 2+leftImagePaddingTop, paint);
         }
 
-        Bitmap res = Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
-        canvas.drawBitmap(res, leftImagePaddingLeft, viewHeight / 2 - res.getHeight() / 2+leftImagePaddingTop, paint);
         leftImageWidth = res.getWidth();
     }
 
@@ -451,7 +497,15 @@ public class CustomSelectItem extends View implements View.OnClickListener{
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textCenterVerticalBaselineY = viewHeight / 2 - fm.descent + (fm.descent - fm.ascent) / 2;
         leftSideTextWidth = bounds.width();
-        canvas.drawText(leftSideText, leftSideTextPaddingLeft + leftImageWidth + leftImagePaddingLeft, textCenterVerticalBaselineY+leftSideTextPaddingTop, paint);
+        if (gravity==Gravity.CENTER){
+            canvas.drawText(leftSideText, leftSideTextPaddingLeft + leftImageWidth + leftImagePaddingLeft, textCenterVerticalBaselineY+leftSideTextPaddingTop, paint);
+        }else if (gravity==Gravity.BOTTOM){
+            textCenterVerticalBaselineY = viewHeight -  (fm.bottom - fm.top)/2 + 3*fm.bottom/2;
+            canvas.drawText(leftSideText, leftSideTextPaddingLeft + leftImageWidth + leftImagePaddingLeft, textCenterVerticalBaselineY - allPaddingBottom, paint);
+        }else{
+            canvas.drawText(leftSideText, leftSideTextPaddingLeft + leftImageWidth + leftImagePaddingLeft, textCenterVerticalBaselineY+leftSideTextPaddingTop, paint);
+        }
+
     }
 
     /**
@@ -460,15 +514,15 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getLeftTextFromXml(TypedArray ta) {
-        leftText = ta.getString(R.styleable.itemView_leftTextSelect);
-        leftTextColor = ta.getColor(R.styleable.itemView_leftTextColorSelect, Color.BLACK);
-        leftTextSize = ta.getDimension(R.styleable.itemView_leftTextSizeSelect, 14.0f);
+        leftText = ta.getString(R.styleable.CustomSelectItem_leftTextSelect);
+        leftTextColor = ta.getColor(R.styleable.CustomSelectItem_leftTextColorSelect, Color.BLACK);
+        leftTextSize = ta.getDimension(R.styleable.CustomSelectItem_leftTextSizeSelect, 14.0f);
         if (leftTextSize != 14.0f) {
             leftTextSize = DensityUtils.px2sp(context, leftTextSize);
         }
         // 默认为0
-        leftTextPaddingLeft = ta.getDimension(R.styleable.itemView_leftTextPaddingLeftSelect, 0);
-        leftTextPaddingTop = ta.getDimension(R.styleable.itemView_leftTextPaddingTopSelect, 0);
+        leftTextPaddingLeft = ta.getDimension(R.styleable.CustomSelectItem_leftTextPaddingLeftSelect, 0);
+        leftTextPaddingTop = ta.getDimension(R.styleable.CustomSelectItem_leftTextPaddingTopSelect, 0);
     }
 
     /**
@@ -477,16 +531,16 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getLeftSideTextFromXml(TypedArray ta) {
-        leftSideText = ta.getString(R.styleable.itemView_leftSideTextSelect);
-        leftSideTextColor = ta.getColor(R.styleable.itemView_leftSideTextColorSelect, Color.BLACK);
-        leftSideTextSize = ta.getDimension(R.styleable.itemView_leftSideTextSizeSelect, 14.0f);
+        leftSideText = ta.getString(R.styleable.CustomSelectItem_leftSideTextSelect);
+        leftSideTextColor = ta.getColor(R.styleable.CustomSelectItem_leftSideTextColorSelect, Color.BLACK);
+        leftSideTextSize = ta.getDimension(R.styleable.CustomSelectItem_leftSideTextSizeSelect, 14.0f);
         if (leftSideTextSize != 14.0f) {
             leftSideTextSize = DensityUtils.px2sp(context, leftSideTextSize);
         }
 
         // 默认为0
-        leftSideTextPaddingLeft = ta.getDimension(R.styleable.itemView_leftSideTextPaddingLeftSelect, 0);
-        leftSideTextPaddingTop = ta.getDimension(R.styleable.itemView_leftSideTextPaddingTopSelect, 0);
+        leftSideTextPaddingLeft = ta.getDimension(R.styleable.CustomSelectItem_leftSideTextPaddingLeftSelect, 0);
+        leftSideTextPaddingTop = ta.getDimension(R.styleable.CustomSelectItem_leftSideTextPaddingTopSelect, 0);
         Log.d("getLeftSideTextFromXml", String.valueOf(leftSideTextPaddingLeft));
 
     }
@@ -496,10 +550,10 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getLeftImageFromXml(TypedArray ta) {
-        leftImageScource = ta.getResourceId(R.styleable.itemView_leftImageSourceSelect, R.drawable.ic_launcher);
-        leftImagePaddingLeft = ta.getDimension(R.styleable.itemView_leftImagePaddingLeftSelect, 0);
-        leftImagePaddingTop = ta.getDimension(R.styleable.itemView_leftImagePaddingTopSelect, 0);
-        leftImageTimes = ta.getDimension(R.styleable.itemView_leftImageTimesSelect, 1.0f);
+        leftImageScource = ta.getResourceId(R.styleable.CustomSelectItem_leftImageSourceSelect, R.drawable.ic_launcher);
+        leftImagePaddingLeft = ta.getDimension(R.styleable.CustomSelectItem_leftImagePaddingLeftSelect, 0);
+        leftImagePaddingTop = ta.getDimension(R.styleable.CustomSelectItem_leftImagePaddingTopSelect, 0);
+        leftImageTimes = ta.getDimension(R.styleable.CustomSelectItem_leftImageTimesSelect, 1.0f);
     }
     /**
      * 从xml文件中获取右边文字的属性
@@ -507,16 +561,16 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getRightTextFromXml(TypedArray ta) {
-        rightText = ta.getString(R.styleable.itemView_rightTextSelect);
-        rightTextColor = ta.getColor(R.styleable.itemView_rightTextColorSelect, Color.BLACK);
-        rightTextSize = ta.getDimension(R.styleable.itemView_rightTextSizeSelect, 14.0f);
+        rightText = ta.getString(R.styleable.CustomSelectItem_rightTextSelect);
+        rightTextColor = ta.getColor(R.styleable.CustomSelectItem_rightTextColorSelect, Color.BLACK);
+        rightTextSize = ta.getDimension(R.styleable.CustomSelectItem_rightTextSizeSelect, 14.0f);
         Log.d("getLeftSideTextFromXml", String.valueOf(rightTextSize));
         if (rightTextSize != 14.0f) {
             rightTextSize = DensityUtils.px2sp(context, rightTextSize);
         }
         // 默认为0
-        rightTextPaddingRight = ta.getDimension(R.styleable.itemView_rightTextPaddingRightSelect, 0);
-        rightTextPaddingTop = ta.getDimension(R.styleable.itemView_rightTextPaddingTopSelect, 0);
+        rightTextPaddingRight = ta.getDimension(R.styleable.CustomSelectItem_rightTextPaddingRightSelect, 0);
+        rightTextPaddingTop = ta.getDimension(R.styleable.CustomSelectItem_rightTextPaddingTopSelect, 0);
     }
 
     /**
@@ -525,14 +579,14 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getCenterTextFromXml(TypedArray ta) {
-        centerText = ta.getString(R.styleable.itemView_centerTextSelect);
-        centerTextColor = ta.getColor(R.styleable.itemView_centerTextColorSelect, Color.BLACK);
-        centerTextSize = ta.getDimension(R.styleable.itemView_centerTextSizeSelect, 14.0f);
+        centerText = ta.getString(R.styleable.CustomSelectItem_centerTextSelect);
+        centerTextColor = ta.getColor(R.styleable.CustomSelectItem_centerTextColorSelect, Color.BLACK);
+        centerTextSize = ta.getDimension(R.styleable.CustomSelectItem_centerTextSizeSelect, 14.0f);
         if (centerTextSize != 14.0f) {
             centerTextSize = DensityUtils.px2sp(context, centerTextSize);
         }
         // 默认为0
-        centerTextPaddingTop = ta.getDimension(R.styleable.itemView_centerTextPaddingTopSelect, 0);
+        centerTextPaddingTop = ta.getDimension(R.styleable.CustomSelectItem_centerTextPaddingTopSelect, 0);
     }
     /**
      * 从xml文件中获取中间图片的属性
@@ -540,8 +594,8 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getCenterImageFromXml(TypedArray ta) {
-        centerImageScource = ta.getResourceId(R.styleable.itemView_centerImageSourceSelect, R.drawable.ic_launcher);
-        centerImagePaddingTop = ta.getDimension(R.styleable.itemView_centerImagePaddingTopSelect, 0);
+        centerImageScource = ta.getResourceId(R.styleable.CustomSelectItem_centerImageSourceSelect, R.drawable.ic_launcher);
+        centerImagePaddingTop = ta.getDimension(R.styleable.CustomSelectItem_centerImagePaddingTopSelect, 0);
     }
 
     /**
@@ -550,15 +604,15 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getRightSideTextFromXml(TypedArray ta) {
-        rightSideText = ta.getString(R.styleable.itemView_rightSideTextSelect);
-        rightSideTextColor = ta.getColor(R.styleable.itemView_rightSideTextColorSelect, Color.BLACK);
-        rightSideTextSize = ta.getDimension(R.styleable.itemView_rightSideTextSizeSelect, 14.0f);
+        rightSideText = ta.getString(R.styleable.CustomSelectItem_rightSideTextSelect);
+        rightSideTextColor = ta.getColor(R.styleable.CustomSelectItem_rightSideTextColorSelect, Color.BLACK);
+        rightSideTextSize = ta.getDimension(R.styleable.CustomSelectItem_rightSideTextSizeSelect, 14.0f);
         if (rightSideTextSize != 14.0f) {
             rightSideTextSize = DensityUtils.px2sp(context, rightSideTextSize);
         }
         // 默认为0
-        rightSideTextPaddingRight = ta.getDimension(R.styleable.itemView_rightSideTextPaddingRightSelect, 0);
-        rightSideTextPaddingTop = ta.getDimension(R.styleable.itemView_rightSideTextPaddingTopSelect, 0);
+        rightSideTextPaddingRight = ta.getDimension(R.styleable.CustomSelectItem_rightSideTextPaddingRightSelect, 0);
+        rightSideTextPaddingTop = ta.getDimension(R.styleable.CustomSelectItem_rightSideTextPaddingTopSelect, 0);
 
     }
 
@@ -568,10 +622,10 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param ta
      */
     private void getRightImageFromXml(TypedArray ta) {
-        rightImageScource = ta.getResourceId(R.styleable.itemView_rightImageSourceSelect, R.drawable.ic_launcher);
-        rightImagePaddingRight = ta.getDimension(R.styleable.itemView_rightImagePaddingRightSelect, 0);
-        rightImagePaddingTop = ta.getDimension(R.styleable.itemView_rightImagePaddingTopSelect, 0);
-        rightImageTimes = ta.getDimension(R.styleable.itemView_rightImageTimesSelect, 1.0f);
+        rightImageScource = ta.getResourceId(R.styleable.CustomSelectItem_rightImageSourceSelect, R.drawable.ic_launcher);
+        rightImagePaddingRight = ta.getDimension(R.styleable.CustomSelectItem_rightImagePaddingRightSelect, 0);
+        rightImagePaddingTop = ta.getDimension(R.styleable.CustomSelectItem_rightImagePaddingTopSelect, 0);
+        rightImageTimes = ta.getDimension(R.styleable.CustomSelectItem_rightImageTimesSelect, 1.0f);
     }
 
     /**

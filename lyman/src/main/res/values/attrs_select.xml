@@ -71,7 +71,17 @@
     <attr name="centerImageSourceSelect" format="reference|integer" />
     <attr name="centerImagePaddingTopSelect" format="reference|dimension" />
 
-    <declare-styleable name="itemView">
+
+    <attr name="gravitySelect" >
+        <enum name="bottom" value="80" />
+        <enum name="top" value="48" />
+        <enum name="center" value="17" />
+    </attr>
+    <attr name="allPaddingBootomSelect" format="reference|dimension" />
+
+    <declare-styleable name="CustomSelectItem">
+        <attr name="allPaddingBootomSelect"/>
+        <attr name="gravitySelect"/>
         <attr name="rightTypeSelect" />
         <attr name="rightSideTypeSelect" />
         <attr name="leftTypeSelect" />

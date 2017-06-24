@@ -1,6 +1,8 @@
-package com.zjtcb.luoyan.github.base;
+package com.ly.luoyan.mylibrary.base;
 
 import com.ly.luoyan.mylibrary.utils.L;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**

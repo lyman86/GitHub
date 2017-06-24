@@ -109,11 +109,11 @@ public class CusDialogShowImpl implements CusDialogShow{
         builder.setProgressbarState(builder.VISIBLE);
         builder.create().show();
     }
-
+    @Override
     public void dismissDialog(){
         builder.dismissDialog();
     }
-
+    @Override
     public void remove(){
         builder = null;
     }

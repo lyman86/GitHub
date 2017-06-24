@@ -16,6 +16,8 @@
         lyman:leftImageTimesSelect="0.9px"
         lyman:leftImagePaddingLeftSelect="10dp"
         android:background="@color/title_bar"
+        lyman:gravitySelect="bottom"
+        lyman:allPaddingBootomSelect="12dp"
         android:layout_height="@dimen/title_bar_height"/>
 
 </LinearLayout>

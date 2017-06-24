@@ -1,17 +1,19 @@
-package com.zjtcb.luoyan.github.base;
+package com.ly.luoyan.mylibrary.base;
 
 import android.content.DialogInterface;
+import android.view.View;
 import com.ly.luoyan.mylibrary.listener.OnCusDialogListener;
-import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShowImpl;
 import com.ly.luoyan.mylibrary.utils.L;
+import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShow;
+import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShowImpl;
 
 /**
  * Created by luoyan on 2017/3/14.
  */
 
-public abstract class BaseDialogActivity extends BaseActivity implements DialogInterface.OnClickListener{
+public abstract class BaseDialogFragment extends BaseFragment2 implements DialogInterface.OnClickListener{
 
-    private CusDialogShowImpl cusDialogShowImpl;
+    private CusDialogShow cusDialogShow;
 
     private OnCusDialogListener cusDialogListener;
 
@@ -22,30 +24,30 @@ public abstract class BaseDialogActivity extends BaseActivity implements DialogI
     }
 
     @Override
-    public void initBase(){
-        L.e("base","initBase");
-        initDA();
-        cusDialogShowImpl = new CusDialogShowImpl(this);
+    public void initBase(View view){
+        L.e(TAG,"initBase");
+        initDA(view);
+        cusDialogShow = new CusDialogShowImpl(getActivity());
     }
 
     public void showAlertDialog(String title, String msg){
-        cusDialogShowImpl.showDialogAlert(title,msg);
+        cusDialogShow.showDialogAlert(title,msg);
     }
 
     public void showAlertDialog(String msg){
-        cusDialogShowImpl.showDialogAlert(msg);
+        cusDialogShow.showDialogAlert(msg);
     }
 
     public void showProgressDialog(String content){
-        cusDialogShowImpl.showDialogProgress(content);
+        cusDialogShow.showDialogProgress(content);
     }
 
     public void showProgressDialogCus(){
-        cusDialogShowImpl.showDialogProgressCus();
+        cusDialogShow.showDialogProgressCus();
     }
 
     public void dismissDialog(){
-        cusDialogShowImpl.dismissDialog();
+        cusDialogShow.dismissDialog();
     }
 
     @Override
@@ -53,14 +55,14 @@ public abstract class BaseDialogActivity extends BaseActivity implements DialogI
         if (cusDialogListener!=null){
             cusDialogListener.onCustomDialog(dialogInterface,i);
         }
-        cusDialogShowImpl.dismissDialog();
+        cusDialogShow.dismissDialog();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        cusDialogShowImpl.remove();
+    public void onDestroyView() {
+        super.onDestroyView();
+        cusDialogShow.remove();
     }
 
-    public abstract void initDA();
+    public abstract void initDA(View view);
 }
