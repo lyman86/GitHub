@@ -8,7 +8,12 @@ allprojects {
     <br>
 		&nbsp;&nbsp;&nbsp;&nbsp;	...
       <br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maven { url 'https://jitpack.io' }
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maven { 
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		url 'https://jitpack.io'
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
       <br>
 		&nbsp;&nbsp;}
     <br>
