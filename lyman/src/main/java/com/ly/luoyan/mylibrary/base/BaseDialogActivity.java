@@ -1,17 +1,15 @@
 package com.ly.luoyan.mylibrary.base;
 
 import android.content.DialogInterface;
-
 import com.ly.luoyan.mylibrary.listener.OnCusDialogListener;
-import com.ly.luoyan.mylibrary.utils.L;
 import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShow;
 import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShowImpl;
 
 /**
- * Created by luoyan on 2017/3/14.
+ * Created by luoyan on 2017/8/8.
  */
 
-public abstract class BaseDialogActivity extends BaseActivity implements DialogInterface.OnClickListener{
+public abstract class BaseDialogActivity extends BaseActivity implements BaseDialogFunction,DialogInterface.OnClickListener{
 
     private CusDialogShow cusDialogShow;
 
@@ -24,29 +22,27 @@ public abstract class BaseDialogActivity extends BaseActivity implements DialogI
     }
 
     @Override
-    public void initBase(){
-        L.e("base","initBase");
-        initDA();
-        cusDialogShow = new CusDialogShowImpl(this);
-    }
-
-    public void showAlertDialog(String title, String msg){
-        cusDialogShow.showDialogAlert(title,msg);
-    }
-
-    public void showAlertDialog(String msg){
-        cusDialogShow.showDialogAlert(msg);
-    }
-
-    public void showProgressDialog(String content){
+    public void showProgress(String content) {
         cusDialogShow.showDialogProgress(content);
     }
 
-    public void showProgressDialogCus(){
+    @Override
+    public void showProgressCus() {
         cusDialogShow.showDialogProgressCus();
     }
 
-    public void dismissDialog(){
+    @Override
+    public void showAlertDialog(String title, String message) {
+        cusDialogShow.showDialogAlert(title,message);
+    }
+
+    @Override
+    public void showAlertDialog(String message) {
+        cusDialogShow.showDialogAlert(message);
+    }
+
+    @Override
+    public void dismissDialog() {
         cusDialogShow.dismissDialog();
     }
 
@@ -64,5 +60,12 @@ public abstract class BaseDialogActivity extends BaseActivity implements DialogI
         cusDialogShow.remove();
     }
 
-    public abstract void initDA();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        cusDialogShow = new CusDialogShowImpl(this);
+    }
+
+    @Override
+    public abstract void setContentView();
 }

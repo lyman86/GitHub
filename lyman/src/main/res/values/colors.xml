@@ -13,4 +13,6 @@
     <color name="title_bar_text">#ffffff</color>
 
     <color name="title_bar">#de3a3a</color>
+
+    <color name="lyman_bg_gray_206">#cecece</color>
 </resources>

@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import com.ly.luoyan.mylibrary.base.BaseActivityForApp;
 import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 import com.zjtcb.luoyan.github.activity.DialogActivity;
+import com.zjtcb.luoyan.github.activity.PictureActivity;
 import com.zjtcb.luoyan.github.activity.PopupWindowActivity;
-import com.zjtcb.luoyan.github.activity.TestActivity;
-import com.zjtcb.luoyan.github.activity.WithFragmentActivity;
+import com.zjtcb.luoyan.github.activity.fragment.WithFragmentActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -22,12 +21,11 @@ public class MainActivity extends BaseActivityForApp {
     CustomSelectItem titleBar;
 
     @Override
-    public void initApp() {
-//        EventBus.getDefault().register(this);
+    public void setContentView() {
         setContentView(R.layout.activity_main);
     }
 
-    @OnClick({R.id.btn_go_dialog_activity,R.id.btn_go_popup_window_activity,R.id.btn_go_fragment_activity})
+    @OnClick({R.id.btn_go_dialog_activity,R.id.btn_go_popup_window_activity,R.id.btn_go_fragment_activity,R.id.btn_go_photo})
     public void go(View view){
         switch (view.getId()){
             case R.id.btn_go_dialog_activity:
@@ -39,24 +37,22 @@ public class MainActivity extends BaseActivityForApp {
             case R.id.btn_go_fragment_activity:
                 startActivity(new Intent(this, WithFragmentActivity.class));
                 break;
+            case R.id.btn_go_photo:
+                startActivity(new Intent(this, PictureActivity.class));
+                break;
         }
     }
+
     @Override
-    public void initData() {
+    public void initDatas() {
         titleBar.setCenterText("MainActivity");
         titleBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleBarHeight+statusBarHeight));
     }
 
-//    @Subscribe
+    //    @Subscribe
 //    public void onEventMainThread(EventMessage eventMessage) {
 //        if (eventMessage.getMsg().equals(REFRESH_ME)) {
 //            showToast("T__T !");
 //        }
 //    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        EventBus.getDefault().unregister(this);
-    }
 }

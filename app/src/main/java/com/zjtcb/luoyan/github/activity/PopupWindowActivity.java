@@ -52,12 +52,12 @@ public class PopupWindowActivity extends BaseActivityForApp {
     OpenPopupwindowCustom openPopupwindowCustom;
 
     @Override
-    public void initApp() {
+    public void setContentView() {
         setContentView(R.layout.activity_popup_window);
     }
 
     @Override
-    public void initData() {
+    public void initDatas() {
         titleBar.setCenterText("PopupWindow");
         titleBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleBarHeight+statusBarHeight));
         openFromRightPopupwindow = new OpenFromRightPopupwindow(this);
@@ -98,4 +98,6 @@ public class PopupWindowActivity extends BaseActivityForApp {
     public void initListener() {
         titleBar.setOnBarViewClickListener(this);
     }
+
+
 }

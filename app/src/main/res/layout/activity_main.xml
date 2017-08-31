@@ -27,4 +27,12 @@
         android:layout_height="wrap_content"
         android:text="fragment_show"
         />
+
+    <Button
+        android:id="@+id/btn_go_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="photo"
+        />
+
 </LinearLayout>

@@ -1,99 +1,102 @@
 package com.ly.luoyan.mylibrary.base;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ly.luoyan.mylibrary.R;
-import com.ly.luoyan.mylibrary.utils.MyWindow;
-import com.ly.luoyan.mylibrary.utils.WindowUtil;
-import com.ly.luoyan.mylibrary.widget.CustomDialog;
+import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 
-import butterknife.ButterKnife;
+/**
+ * Created by luoyan on 2017/8/31.
+ */
 
-public abstract class BaseFragment extends Fragment implements OnClickListener{
-	private CustomDialog.Builder builder;
-	private Toast mToast;
-	public View view;
-	public int layoutId;
-	public String userId = "";
+public abstract class BaseFragment extends Fragment implements BaseStatusFragmentFunction,BaseViewFunction {
 
-	public BaseFragment() {
+    private Toast mToast;
 
-	}
+    private static final String TAG = "base2.BaseFragment";
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		setLayout();
-		return inflater.inflate(layoutId,null);
-	}
+    private View rootView;
 
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		this.view = view;
-		builder = new CustomDialog.Builder(getActivity());
-		ButterKnife.bind(this,view);
-		init();
+    protected boolean userButterKnif = true;
 
-	}
+    protected CustomSelectItem titleBar;
 
-	private void init() {
-		initView();
-		initListener();
-		processLogic();
-	}
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (rootView==null){
+            rootView = inflater.from(getContext()).inflate(R.layout.fragment_default,null);
+        }
+//        if (userButterKnif){ButterKnife.bind(rootView);}
+        return rootView;
+    }
 
-	@Override
-	public void onClick(View v) {
-		 onViewClick(v);
-	}
-	public abstract void onViewClick(View v);
-	public abstract void setLayout();
-	public void initView(){}
-	public void initListener(){}
-	public void processLogic(){}
-//	public void showProgressDialog() {
-//		MyWindow window = WindowUtil.getWindow(BaseFragment.this.getActivity());
-//		builder.setDialogLoading(window.winth * 2 / 3, window.height * 1 / 8,"");
-//	}
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        titleBar = (CustomSelectItem) view.findViewById(R.id.cus_title_bar);
+        initListener();
+        initDatas();
+    }
 
-	public void dismissDialog() {
-		builder.dismissDialog();
-	}
+    @Override
+    public void showToast(String string) {
+        if (mToast == null) {
+            mToast = Toast.makeText(getActivity(), string, Toast.LENGTH_LONG);
+            mToast.setGravity(Gravity.CENTER,0,0);
+        } else {
+            mToast.setText(string);
+        }
+        mToast.show();
+    }
 
-	public void showToast(final String string) {
-		try {
-			if (mToast == null) {
-				mToast = Toast.makeText(BaseFragment.this.getActivity(), string,
-						Toast.LENGTH_LONG);
-			} else {
-				mToast.setText(string);
-			}
-			mToast.show();
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+    @Override
+    public void showToast(int source) {
+        if (mToast == null) {
+            mToast = Toast.makeText(getActivity(), getResources().getString(source), Toast.LENGTH_LONG);
+            mToast.setGravity(Gravity.CENTER,0,0);
+        } else {
+            mToast.setText(getResources().getString(source));
+        }
+        mToast.show();
+    }
 
-	}
+    @Override
+    public void showLogE(String tag, String msg) {
+        Log.e(TAG +" "+ tag,msg);
+    }
 
-	public void configRefreshLayout(SwipeRefreshLayout swipeRefreshLayout){
-		swipeRefreshLayout.setColorSchemeResources(
-				R.color.colorPrimary,
-				R.color.colorAccent,
-				R.color.green);
-		swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-	}
+    @Override
+    public void showLogD(String tag, String msg) {
+        Log.d(TAG +" "+ tag,msg);
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    @Override
+    public void setContentView(int layoutId){
+        rootView = LayoutInflater.from(getContext()).inflate(layoutId,null);
+    }
+
+    @Override
+    public void initListener() {}
+
+    @Override
+    public void initDatas() {}
+
+    public View getContentView(){
+        return rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (userButterKnif){ButterKnife.unbind(rootView);}
+    }
 }
