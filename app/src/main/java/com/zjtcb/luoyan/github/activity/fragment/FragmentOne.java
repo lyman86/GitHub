@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ly.luoyan.mylibrary.base.BaseFragmentForApp;
 import com.zjtcb.luoyan.github.R;
+
+import butterknife.Bind;
 
 /**
  * Created by luoyan on 2017/8/31.
@@ -14,6 +17,8 @@ import com.zjtcb.luoyan.github.R;
 
 public class FragmentOne extends BaseFragmentForApp {
 
+    @Bind(R.id.tv)
+    TextView tv;
     public static FragmentOne newInstance() {
         Bundle args = new Bundle();
         FragmentOne fragment = new FragmentOne();
@@ -31,5 +36,13 @@ public class FragmentOne extends BaseFragmentForApp {
     public void initDatas() {
         titleBar.setCenterText("FragmentOne");
         titleBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleBarHeight+statusBarHeight));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (tv!=null){
+            tv.setText("Text");
+        }
     }
 }

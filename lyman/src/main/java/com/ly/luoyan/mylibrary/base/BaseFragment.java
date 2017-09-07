@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.ly.luoyan.mylibrary.R;
 import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by luoyan on 2017/8/31.
  */
@@ -35,13 +37,13 @@ public abstract class BaseFragment extends Fragment implements BaseStatusFragmen
         if (rootView==null){
             rootView = inflater.from(getContext()).inflate(R.layout.fragment_default,null);
         }
-//        if (userButterKnif){ButterKnife.bind(rootView);}
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (userButterKnif){ButterKnife.bind(this,view);}
         titleBar = (CustomSelectItem) view.findViewById(R.id.cus_title_bar);
         initListener();
         initDatas();
@@ -97,6 +99,6 @@ public abstract class BaseFragment extends Fragment implements BaseStatusFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (userButterKnif){ButterKnife.unbind(rootView);}
+        if (userButterKnif){ButterKnife.unbind(rootView);}
     }
 }
