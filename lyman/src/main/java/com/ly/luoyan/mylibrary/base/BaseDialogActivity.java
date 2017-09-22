@@ -1,6 +1,9 @@
 package com.ly.luoyan.mylibrary.base;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
 import com.ly.luoyan.mylibrary.listener.OnCusDialogListener;
 import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShow;
 import com.ly.luoyan.mylibrary.utils.dialog.CusDialogShowImpl;
@@ -19,6 +22,12 @@ public abstract class BaseDialogActivity extends BaseActivity implements BaseDia
 
     public void setOnCusDialogListener(OnCusDialogListener listener){
         this.cusDialogListener = listener;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        cusDialogShow = new CusDialogShowImpl(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -58,12 +67,6 @@ public abstract class BaseDialogActivity extends BaseActivity implements BaseDia
     protected void onDestroy() {
         super.onDestroy();
         cusDialogShow.remove();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        cusDialogShow = new CusDialogShowImpl(this);
     }
 
     @Override
