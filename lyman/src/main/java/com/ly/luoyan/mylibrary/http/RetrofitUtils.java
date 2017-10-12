@@ -5,7 +5,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+//import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.fastjson.FastJsonConverterFactory;
 
 /**
@@ -22,23 +22,23 @@ public class RetrofitUtils {
 
     }
 
-    public static Retrofit newInstence() {
-        mRetrofit = null;
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(300, TimeUnit.SECONDS)
-                .writeTimeout(600, TimeUnit.SECONDS)
-                .readTimeout(300, TimeUnit.SECONDS)
-                .build();
-        Converter.Factory fastJsonConverterFactory = FastJsonConverterFactory.create();
-        CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
-        mRetrofit = new Retrofit.Builder()
-                .client(okHttpClient)//添加一个client,不然retrofit会自己默认添加一个
-                .baseUrl(url)
-                .addConverterFactory(fastJsonConverterFactory)
-                .addCallAdapterFactory(rxJavaCallAdapterFactory)
-                .build();
-        return mRetrofit;
-    }
+//    public static Retrofit newInstence() {
+//        mRetrofit = null;
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(300, TimeUnit.SECONDS)
+//                .writeTimeout(600, TimeUnit.SECONDS)
+//                .readTimeout(300, TimeUnit.SECONDS)
+//                .build();
+//        Converter.Factory fastJsonConverterFactory = FastJsonConverterFactory.create();
+//        CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
+//        mRetrofit = new Retrofit.Builder()
+//                .client(okHttpClient)//添加一个client,不然retrofit会自己默认添加一个
+//                .baseUrl(url)
+//                .addConverterFactory(fastJsonConverterFactory)
+//                .addCallAdapterFactory(rxJavaCallAdapterFactory)
+//                .build();
+//        return mRetrofit;
+//    }
 
 
 
