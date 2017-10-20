@@ -24,7 +24,7 @@ allprojects {
 <br>
   &nbsp;&nbsp;dependencies {
   <br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compile 'com.github.lyman86:GitHub:v1.0.0'
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compile 'com.github.lyman86:GitHub:v1.0.6'
           <br>
 	}
   <br>
