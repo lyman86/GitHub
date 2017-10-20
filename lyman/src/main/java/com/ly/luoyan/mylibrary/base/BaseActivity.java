@@ -41,8 +41,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseStat
         if (userButterKnif) {
             ButterKnife.bind(this);
         }
-        initListener();
         initDatas();
+        initListener();
     }
 
     @Override
