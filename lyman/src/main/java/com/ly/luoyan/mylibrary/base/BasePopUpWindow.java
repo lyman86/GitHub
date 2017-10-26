@@ -60,7 +60,11 @@ public abstract class BasePopUpWindow extends PopupWindow implements PopupWindow
 		baseConfig();
 		int animationStyle = choiceMode();
 		setWidth(mWidth);
-		setHeight(mHeight- StatusBarUtils.getStatusBarHeight(context));
+		if (mode==TANS_HOR_FROM_RIGHT||mode==TANS_HOR_FROM_LEFT){
+			setHeight(mHeight- StatusBarUtils.getStatusBarHeight(context));
+		}else{
+			setHeight(mHeight);
+		}
 		initId();
 		initEvent();
 		setAnimationStyle(animationStyle);
