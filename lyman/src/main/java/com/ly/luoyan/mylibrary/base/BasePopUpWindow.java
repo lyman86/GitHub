@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import com.ly.luoyan.mylibrary.R;
 import com.ly.luoyan.mylibrary.utils.MyWindow;
+import com.ly.luoyan.mylibrary.utils.StatusBarUtils;
 import com.ly.luoyan.mylibrary.utils.WindowUtil;
 
 
@@ -59,7 +60,7 @@ public abstract class BasePopUpWindow extends PopupWindow implements PopupWindow
 		baseConfig();
 		int animationStyle = choiceMode();
 		setWidth(mWidth);
-		setHeight(mHeight);
+		setHeight(mHeight- StatusBarUtils.getStatusBarHeight(context));
 		initId();
 		initEvent();
 		setAnimationStyle(animationStyle);
