@@ -45,8 +45,8 @@ public abstract class BaseFragment extends Fragment implements BaseStatusFragmen
         super.onViewCreated(view, savedInstanceState);
         if (userButterKnif){ButterKnife.bind(this,view);}
         titleBar = (CustomSelectItem) view.findViewById(R.id.cus_title_bar);
-        initListener();
         initDatas();
+        initListener();
     }
 
     @Override

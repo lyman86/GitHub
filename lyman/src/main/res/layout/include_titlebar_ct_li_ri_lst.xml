@@ -20,7 +20,7 @@
         lyman:leftSideTypeSelect="text"
         lyman:leftSideTextSelect="返回"
         lyman:leftSideTextPaddingLeftSelect="5dp"
-        lyman:leftSideTextSizeSelect="20dp"
+        lyman:leftSideTextSizeSelect="18dp"
         lyman:leftSideTextColorSelect="@color/write"
 
         lyman:rightTypeSelect="image"

@@ -4,7 +4,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/include_title_bar_ct_li"/>
+    <include layout="@layout/include_titlebar_ct_li_ri_lst"/>
 
 
     <Button
