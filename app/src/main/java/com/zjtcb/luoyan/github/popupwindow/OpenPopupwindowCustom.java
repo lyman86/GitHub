@@ -21,7 +21,6 @@ public class OpenPopupwindowCustom extends BasePopUpWindow {
         setWidthAndHeight((int) (myWindow.winth*0.8f),(int) (myWindow.height*0.3f));
         canNotTouchOutSide();
         setLayout(context, R.layout.popup_window_open_from_right, BasePopUpWindow.CUSTOM);
-
     }
 
     @Override

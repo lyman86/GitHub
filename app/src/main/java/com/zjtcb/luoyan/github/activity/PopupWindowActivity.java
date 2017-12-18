@@ -87,6 +87,8 @@ public class PopupWindowActivity extends BaseActivityForApp {
                 openFromBottomPopupwindow.lightOff(this);
                 break;
             case R.id.btn_show_custom:
+                openPopupwindowCustom.setTouchable(true);
+                openPopupwindowCustom.setFocusable(true);
                 openPopupwindowCustom.showPop(rootView);
                 openPopupwindowCustom.lightOff(this);
                 break;

@@ -109,17 +109,32 @@ public abstract class BasePopUpWindow extends PopupWindow implements PopupWindow
     protected void baseConfig() {
         setFocusable(true);
         setTouchable(true);
-        setOutsideTouchable(true);
+        setOutsideTouchable(false);
         setBackgroundDrawable(new BitmapDrawable());
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setTouchInterceptor(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!outSideTouch) {
-                    return true;
-                }else{
-                    return false;
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                if ((event.getAction() == MotionEvent.ACTION_DOWN)
+                        && ((x < 0) || (x >= mWidth) || (y < 0) || (y >= mHeight))) {
+                    // donothing
+                    // 消费事件
+                    if (!outSideTouch) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    if (!outSideTouch) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
+                return false;
             }
         });
     }
