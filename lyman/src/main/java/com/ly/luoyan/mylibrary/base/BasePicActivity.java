@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.ly.luoyan.mylibrary.listener.GetPictureListener;
@@ -23,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by luoyan on 2017/8/8.
@@ -48,7 +51,7 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
     private File tempFile;
     private String savePicPath;
     private String savePicCutPath;
-    private String saveFileName = "test";
+    private String saveFileName = "app";
     private File cutFile;
     private String[] perms = {"android.permission.CAMERA"};
     private String[] permRW = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE"};
@@ -62,8 +65,8 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
     @Override
     public void initDatas() {
         super.initDatas();
-        savePicPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test/pic/";
-        savePicCutPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test/cut/";
+        savePicPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/app/pic/";
+        savePicCutPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/app/cut/";
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -93,12 +96,24 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
             file.mkdirs();
         }
         tempFile = new File(file, saveFileName+".jpg");
-        // 指定调用相机拍照后照片的储存路径
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            String authorities = "com.ly.luoyan.mylibrary.fileprovider";
+            //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cameraIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+            //通过FileProvider创建一个content类型的Uri
+            Uri imageUri = FileProvider.getUriForFile(this, authorities, tempFile);
+            // 指定调用相机拍照后照片的储存路径
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        }else{
+            // 指定调用相机拍照后照片的储存路径
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+        }
         startActivityForResult(cameraIntent, Config.CAMERA);
         Log.d("获取SDK版本--->", Build.VERSION.SDK);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void goGallery() {
         int permissionCheck = ContextCompat.checkSelfPermission(this,
@@ -122,10 +137,13 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
             file.mkdirs();
         }
         tempFile = new File(file, saveFileName+".jpg");
+//        String authorities = "com.ly.luoyan.mylibrary.fileprovider";
+//        Uri imageUri = FileProvider.getUriForFile(this, authorities, tempFile);
         Intent intent;
         intent = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
         startActivityForResult(intent, Config.GALLERY);
     }
 
@@ -185,7 +203,7 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
                     break;
                 case Config.CAMERA:
                     if (isClip){
-                        clipPhoto(Uri.fromFile(tempFile));
+                        clipCa(Uri.fromFile(tempFile));
                     }else{
                         try {
                             Uri uriTakephoto;
@@ -248,7 +266,6 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
      */
     private void clipPhoto(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例，这里设置的是正方形（长宽比为1:1）
         intent.putExtra("aspectX", 1);
@@ -258,9 +275,65 @@ public abstract class BasePicActivity extends BaseDialogActivity implements Base
         intent.putExtra("outputY", 500);
         intent.putExtra("return-data", false);
         intent.putExtra("scale", true);
+        intent.putExtra("noFaceDetection", true);
+        intent.setDataAndType(uri, "image/*");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, Config.CUT_PIC);
+    }
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri 图片来源
+     */
+    private void clipCa(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例，这里设置的是正方形（长宽比为1:1）
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 500);
+        intent.putExtra("outputY", 500);
+        intent.putExtra("return-data", false);
+        intent.putExtra("scale", true);
+        intent.putExtra("noFaceDetection", true);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            Uri uri2 = getUri();
+            //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            //通过FileProvider创建一个content类型的Uri
+
+            intent.setDataAndType(uri2, "image/*");
+            // 指定调用相机拍照后照片的储存路径
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,uri2);
+            //将存储图片的uri读写权限授权给剪裁工具应用
+            List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, uri2, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }else{
+            intent.setDataAndType(uri, "image/*");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+        }
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        startActivityForResult(intent, Config.CUT_PIC);
+    }
+
+    private Uri getUri() {
+//        File path = new File(Environment.getExternalStorageDirectory(), "app/pic/");
+//        if (!path.exists()) {
+//            path.mkdirs();
+//        }
+//        File file = new File(path, "cut.jpg");
+        //由于一些Android 7.0以下版本的手机在剪裁保存到URI会有问题，所以根据版本处理下兼容性
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return FileProvider.getUriForFile(this, "com.ly.luoyan.mylibrary.fileprovider", tempFile);
+        } else {
+            return Uri.fromFile(tempFile);
+        }
     }
 
 

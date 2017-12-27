@@ -3,11 +3,13 @@ package com.zjtcb.luoyan.github.activity;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.ly.luoyan.mylibrary.base.BaseActivityForApp;
 import com.ly.luoyan.mylibrary.listener.GetPictureListener;
+import com.ly.luoyan.mylibrary.utils.FileSizeUtil;
 import com.ly.luoyan.mylibrary.widget.CustomSelectItem;
 import com.zjtcb.luoyan.github.R;
 import butterknife.Bind;
@@ -56,5 +58,6 @@ public class PictureActivity extends BaseActivityForApp implements GetPictureLis
     @Override
     public void getPicture(Bitmap bitmap, String path) {
         iv.setImageBitmap(bitmap);
+        Log.e("gggg", FileSizeUtil.getAutoFileOrFilesSize(path));
     }
 }

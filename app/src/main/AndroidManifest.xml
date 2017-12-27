@@ -59,7 +59,10 @@
         <activity android:name=".activity.PopupWindowActivity"/>
         <!--<activity android:name=".activity.TestActivity"/>-->
         <activity android:name=".activity.fragment.WithFragmentActivity"/>
-        <activity android:name=".activity.PictureActivity"/>
+        <activity android:name=".activity.PictureActivity"
+            android:launchMode="singleTask"
+            />
+
     </application>
 
 </manifest>
