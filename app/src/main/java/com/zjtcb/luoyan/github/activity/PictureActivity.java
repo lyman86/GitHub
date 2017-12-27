@@ -35,7 +35,7 @@ public class PictureActivity extends BaseActivityForApp implements GetPictureLis
     @Override
     public void initDatas() {
         super.initDatas();
-        isClip = true;
+        isClip = false;
         titleBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleBarHeight+statusBarHeight));
     }
 
