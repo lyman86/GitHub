@@ -635,7 +635,7 @@ public class CustomSelectItem extends View implements View.OnClickListener{
      * @param rightText
      */
     public void setRightText(String rightText) {
-        this.rightSideText = rightText;
+        this.rightText = rightText;
         postInvalidate();
     }
 
